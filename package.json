@@ -1,6 +1,6 @@
 {
   "name": "@ildella/fetch-mpx",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Dependency-injected HTTP client with pluggable platform fetch, content-type detection, and error mapping.",
   "type": "module",
   "license": "MIT",
@@ -31,6 +31,9 @@
   "files": [
     "src"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "check:lint": "eslint --report-unused-disable-directives .",
     "lint": "eslint . --cache --max-warnings 0",
