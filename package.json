@@ -1,5 +1,5 @@
 {
-  "name": "@ildella/fetch-mpx",
+  "name": "fetch-mpx",
   "version": "0.1.1",
   "description": "Dependency-injected HTTP client with pluggable platform fetch, content-type detection, and error mapping.",
   "type": "module",

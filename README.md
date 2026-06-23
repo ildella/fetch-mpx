@@ -1,4 +1,4 @@
-# @ildella/fetch-mpx
+# fetch-mpx
 
 A dependency-injected HTTP client with pluggable platform fetch, content-type detection, and error mapping.
 
@@ -20,13 +20,13 @@ The library provides optional convenience platform adapters (`platform-browser`,
 ## Install
 
 ```bash
-yarn add @ildella/fetch-mpx
+yarn add fetch-mpx
 ```
 
 ## Usage
 
 ```js
-import {createHttpClient} from '@ildella/fetch-mpx'
+import {createHttpClient} from 'fetch-mpx'
 
 // Create a client with your platform fetch
 const {get, post, put, patch, del, ping} = createHttpClient({
@@ -42,8 +42,8 @@ const created = await post('https://api.example.com/todos', {title: 'New'})
 ### With platform adapters
 
 ```js
-import {createHttpClient} from '@ildella/fetch-mpx'
-import {platformFetch} from '@ildella/fetch-mpx/platform-node'
+import {createHttpClient} from 'fetch-mpx'
+import {platformFetch} from 'fetch-mpx/platform-node'
 
 const client = createHttpClient({
   platformFetch,
@@ -54,7 +54,7 @@ const client = createHttpClient({
 ### Content-type detection
 
 ```js
-import {detectResponseType, RESPONSE_TYPES} from '@ildella/fetch-mpx'
+import {detectResponseType, RESPONSE_TYPES} from 'fetch-mpx'
 
 detectResponseType('application/json')           // 'json'
 detectResponseType('text/html; charset=utf-8')   // 'text'
