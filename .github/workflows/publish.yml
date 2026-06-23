@@ -15,12 +15,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '24.x'
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Enable Corepack
         shell: bash
@@ -43,16 +44,6 @@ jobs:
         run: npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      # # Authenticate npm using the OIDC token before publishing
-      # - name: Authenticate with npm OIDC
-      #   run: |
-      #     npm config set //registry.npmjs.org/:_authToken=""
-      #     # This forces npm to fetch a token from the ambient OIDC environment
-      #     npm login --no-login.web --auth-type=oidc
-
-      # - name: Publish to npm
-      #   run: npm publish --provenance --access public
 
       - name: Create GitHub Release
         run: gh release create ${{ github.ref_name }} --generate-notes
