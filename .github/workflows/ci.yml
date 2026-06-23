@@ -26,6 +26,11 @@ jobs:
           corepack enable
           corepack yarn --version
 
+      - name: Debug OIDC
+        run: |
+          echo "URL=${ACTIONS_ID_TOKEN_REQUEST_URL:+present}"
+          echo "TOKEN=${ACTIONS_ID_TOKEN_REQUEST_TOKEN:+present}"
+
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
