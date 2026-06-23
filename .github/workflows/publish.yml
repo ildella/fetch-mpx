@@ -31,7 +31,7 @@ jobs:
           corepack yarn --version
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install
 
       - name: Run lint
         run: yarn lint
@@ -39,15 +39,20 @@ jobs:
       - name: Run tests
         run: yarn vitest run
 
-      # Authenticate npm using the OIDC token before publishing
-      - name: Authenticate with npm OIDC
-        run: |
-          npm config set //registry.npmjs.org/:_authToken=""
-          # This forces npm to fetch a token from the ambient OIDC environment
-          npm login --no-login.web --auth-type=oidc
-
       - name: Publish to npm
         run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      # # Authenticate npm using the OIDC token before publishing
+      # - name: Authenticate with npm OIDC
+      #   run: |
+      #     npm config set //registry.npmjs.org/:_authToken=""
+      #     # This forces npm to fetch a token from the ambient OIDC environment
+      #     npm login --no-login.web --auth-type=oidc
+
+      # - name: Publish to npm
+      #   run: npm publish --provenance --access public
 
       - name: Create GitHub Release
         run: gh release create ${{ github.ref_name }} --generate-notes
