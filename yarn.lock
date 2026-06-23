@@ -182,6 +182,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ildella/fetch-mpx@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "@ildella/fetch-mpx@workspace:."
+  dependencies:
+    "@eslint/compat": "npm:2.1.0"
+    "@eslint/js": "npm:9.39.4"
+    "@vitest/eslint-plugin": "npm:1.6.20"
+    eslint: "npm:9.39.4"
+    eslint-nostandard: "npm:0.8.0"
+    globals: "npm:17.7.0"
+    vitest: "npm:4.1.9"
+  languageName: unknown
+  linkType: soft
+
 "@isaacs/balanced-match@npm:^4.0.1":
   version: 4.0.1
   resolution: "@isaacs/balanced-match@npm:4.0.1"
@@ -1211,6 +1225,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"globals@npm:17.7.0":
+  version: 17.7.0
+  resolution: "globals@npm:17.7.0"
+  checksum: 10c0/e83f791acf537b85fa1632ac48a45432a1999a61acd9f955b5c2145f66d6b5000a7945029874b6184fa2dfac8d33af03885a5a7ffa457866f1bcf0b40d0c1291
+  languageName: node
+  linkType: hard
+
 "globals@npm:^14.0.0":
   version: 14.0.0
   resolution: "globals@npm:14.0.0"
@@ -1386,19 +1407,6 @@ __metadata:
   checksum: 10c0/effb03cad7c89dfa5bd4f6989364bfc79994c2042ec5966cb9b95990e2edee5cd8969ddf42616a0373ac49fac1403437deaf6e9050fbbaa3546093a59b9ac94e
   languageName: node
   linkType: hard
-
-"lib-template@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "lib-template@workspace:."
-  dependencies:
-    "@eslint/compat": "npm:2.1.0"
-    "@eslint/js": "npm:9.39.4"
-    "@vitest/eslint-plugin": "npm:1.6.20"
-    eslint: "npm:9.39.4"
-    eslint-nostandard: "npm:0.8.0"
-    vitest: "npm:4.1.9"
-  languageName: unknown
-  linkType: soft
 
 "lightningcss-android-arm64@npm:1.32.0":
   version: 1.32.0

@@ -1,1 +1,2 @@
-export {greet} from './lib/greet.js'
+export {createHttpClient} from './client.js'
+export {detectResponseType, RESPONSE_TYPES} from './response-type.js'

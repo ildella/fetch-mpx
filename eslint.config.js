@@ -1,9 +1,8 @@
 import path from 'node:path'
 import {nostandard} from 'eslint-nostandard'
 import vitest from 'eslint-nostandard/vitest'
-// import svelte from 'eslint-nostandard/svelte'
 import {includeIgnoreFile} from '@eslint/compat'
-// import globals from 'globals'
+import globals from 'globals'
 
 const gitignorePath = path.resolve(import.meta.dirname, '.gitignore')
 
@@ -14,28 +13,29 @@ const ignores = [
 export default [
   includeIgnoreFile(gitignorePath),
   ...nostandard.recommended,
-  // ...svelte,
   vitest,
   {
-    name: 'My new library',
+    name: 'fetch-mpx',
     ignores,
-    plugins: {},
     languageOptions: {
-      // globals: {
-      //   ...globals.node,
-      //   ...globals.browse,
-      // },
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
     },
-    rules: {},
   },
   {
     name: 'ProductionCode',
     files: ['src/**/*.js'],
-    rules: {},
+    rules: {
+      'max-lines-per-function': ['warn', {max: 55}],
+    },
   },
   {
     name: 'Tests',
     files: ['tests/**/*.js'],
-    rules: {},
+    rules: {
+      '@stylistic/max-len': ['warn', {code: 100}],
+    },
   },
 ]

@@ -1,30 +1,32 @@
 {
-  "name": "lib-template",
-  "version": "0.2.0",
-  "description": "JavaScript library template.",
+  "name": "@ildella/fetch-mpx",
+  "version": "0.1.0",
+  "description": "Dependency-injected HTTP client with pluggable platform fetch, content-type detection, and error mapping.",
   "type": "module",
   "license": "MIT",
-  "homepage": "https://github.com/ildella/lib-template",
+  "homepage": "https://github.com/ildella/fetch-mpx",
   "repository": {
     "type": "git",
-    "url": "git://github.com/ildella/lib-template.git"
+    "url": "git://github.com/ildella/fetch-mpx.git"
   },
   "author": {
     "name": "Daniele Dellafiore",
     "url": "https://linktr.ee/ildella/"
   },
   "keywords": [
-    "configuration",
-    "project",
-    "eslint",
-    "vite",
-    "vitest"
+    "fetch",
+    "http-client",
+    "content-type",
+    "dependency-injection",
+    "esm"
   ],
   "engines": {
     "node": "^22.0.0 || ^24.0.0"
   },
   "exports": {
-    ".": "./src/index.js"
+    ".": "./src/index.js",
+    "./platform-browser": "./src/platform-browser.js",
+    "./platform-node": "./src/platform-node.js"
   },
   "files": [
     "src"
@@ -44,6 +46,7 @@
     "@vitest/eslint-plugin": "1.6.20",
     "eslint": "9.39.4",
     "eslint-nostandard": "0.8.0",
+    "globals": "17.7.0",
     "vitest": "4.1.9"
   }
 }
