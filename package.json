@@ -1,6 +1,6 @@
 {
   "name": "fetch-mpx",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Dependency-injected HTTP client with pluggable platform fetch, content-type detection, and error mapping.",
   "type": "module",
   "license": "MIT",
