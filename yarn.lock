@@ -182,20 +182,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ildella/fetch-mpx@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "@ildella/fetch-mpx@workspace:."
-  dependencies:
-    "@eslint/compat": "npm:2.1.0"
-    "@eslint/js": "npm:9.39.4"
-    "@vitest/eslint-plugin": "npm:1.6.20"
-    eslint: "npm:9.39.4"
-    eslint-nostandard: "npm:0.8.0"
-    globals: "npm:17.7.0"
-    vitest: "npm:4.1.9"
-  languageName: unknown
-  linkType: soft
-
 "@isaacs/balanced-match@npm:^4.0.1":
   version: 4.0.1
   resolution: "@isaacs/balanced-match@npm:4.0.1"
@@ -1140,6 +1126,20 @@ __metadata:
   checksum: 10c0/e345083c4306b3aed6cb8ec551e26c36bab5c511e99ea4576a16750ddc8d3240e63826cc624f5ae17ad4dc82e68a253213b60d556c11bfad064b7607847ed07f
   languageName: node
   linkType: hard
+
+"fetch-mpx@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "fetch-mpx@workspace:."
+  dependencies:
+    "@eslint/compat": "npm:2.1.0"
+    "@eslint/js": "npm:9.39.4"
+    "@vitest/eslint-plugin": "npm:1.6.20"
+    eslint: "npm:9.39.4"
+    eslint-nostandard: "npm:0.8.0"
+    globals: "npm:17.7.0"
+    vitest: "npm:4.1.9"
+  languageName: unknown
+  linkType: soft
 
 "file-entry-cache@npm:^8.0.0":
   version: 8.0.0
