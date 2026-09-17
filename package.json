@@ -21,7 +21,7 @@
     "esm"
   ],
   "engines": {
-    "node": "^22.0.0 || ^24.0.0"
+    "node": "^22.0.0 || ^24.0.0 || ^26.0.0"
   },
   "exports": {
     ".": "./src/index.js",
@@ -54,6 +54,6 @@
   },
   "dependencies": {
     "@stylistic/eslint-plugin": "5.10.0",
-    "undici": "8.10.2"
+    "undici": "^7.0.0"
   }
 }

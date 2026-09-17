@@ -1164,7 +1164,7 @@ __metadata:
     eslint: "npm:9.39.5"
     eslint-nostandard: "npm:1.1.0"
     globals: "npm:17.12.0"
-    undici: "npm:8.10.2"
+    undici: "npm:^7.0.0"
     vitest: "npm:4.1.11"
   languageName: unknown
   linkType: soft
@@ -2177,10 +2177,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici@npm:8.10.2":
-  version: 8.10.2
-  resolution: "undici@npm:8.10.2"
-  checksum: 10c0/66d7fc69149207cab570d6abbc9e965b6afe1ae889a7d46945b431165c973d6a56f3dd8b70a856e7ae1e550b6366a1cde6f06e68640587f0dadca38de72995ee
+"undici@npm:^7.0.0":
+  version: 7.29.1
+  resolution: "undici@npm:7.29.1"
+  checksum: 10c0/5a419b1364531071ebdfd93748f7f2392d4eb6d68dd99814e1020f8fc6a517e3298129004c871516ee204bac68aba93541f587200b04a7449b8d45683a7d86f6
   languageName: node
   linkType: hard
 
