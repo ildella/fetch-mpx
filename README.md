@@ -2,11 +2,11 @@
 
 A dependency-injected HTTP client with pluggable platform fetch, content-type detection, and error mapping.
 
-- ESM, `"type": "module"`, Node 22+
+- ESM, `"type": "module"`, Node `^22.19.0 || ^24 || ^26`
 - Yarn 6 (via [Yarn Switch](https://v6.yarnpkg.com/concepts/switch) — one-time setup: `curl -sS https://repo.yarnpkg.com/install | bash`, then `yarn` picks the right version from `packageManager`)
 - Vitest for testing
 - No build step — ships source directly
-- Core has zero dependencies; the Node platform adapter uses `undici` for real connect-timeout control
+- Core has zero dependencies; the Node platform adapter uses `undici` (its own `fetch` and `Agent`, so behavior is identical on every supported Node)
 
 ## Design
 
@@ -104,6 +104,10 @@ waits. fetch-mpx exposes both:
 - `connectTimeout` — handshake budget (undici `connect.timeout` via a cached
   `Agent` dispatcher). Node adapter only; defaults to `timeout`. A hang during
   TCP/TLS setup now fails at this budget instead of undici's 10s default.
+
+On Node, requests run through undici's own `fetch` with the matching `Agent`
+from the same `undici` package — not the Node-bundled one — so dispatcher
+behavior is identical on every supported Node.
 
 ```js
 await get(url, {timeout: 30000})            // handshake and total budget: 30s
