@@ -1,4 +1,4 @@
-import {Agent} from 'undici'
+import {Agent, fetch as undiciFetch} from 'undici'
 
 const agents = new Map()
 
@@ -16,5 +16,5 @@ export const platformFetch = (url, options = {}) => {
     options.dispatcher = options.dispatcher ?? agentFor(options.connectTimeout)
     delete options.connectTimeout
   }
-  return globalThis.fetch(url, options)
+  return undiciFetch(url, options)
 }
