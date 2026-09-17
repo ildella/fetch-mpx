@@ -1,5 +1,9 @@
 # fetch-mpx
 
+[![npm](https://img.shields.io/npm/v/fetch-mpx)](https://www.npmjs.com/package/fetch-mpx)
+[![CI](https://github.com/ildella/fetch-mpx/actions/workflows/ci.yml/badge.svg)](https://github.com/ildella/fetch-mpx/actions/workflows/ci.yml)
+[![dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen)](https://github.com/ildella/fetch-mpx)
+
 A tiny, axios-shaped HTTP client over platform `fetch`.
 
 Node `fetch` (undici) is capable but bare. This package adds a simple `get` / `post` / `put` / `patch` / `del` API, a first-class `timeout` option, HTTP error throwing, and just enough error mapping — without bringing axios or any other HTTP stack.
