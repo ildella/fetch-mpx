@@ -6,7 +6,7 @@ A dependency-injected HTTP client with pluggable platform fetch, content-type de
 - Yarn 4 (Corepack)
 - Vitest for testing
 - No build step — ships source directly
-- Zero runtime dependencies
+- Core has zero dependencies; the Node platform adapter uses `undici` for real connect-timeout control
 
 ## Design
 
@@ -87,10 +87,33 @@ try {
   await get(url, {timeout: 5000, clarifyTimeoutError: true})
 } catch (error) {
   error.name   // 'TimeoutError' or 'AbortError'
-  error.code   // 'TIMEOUT' or 'ABORTED'
+  error.code   // 'TIMEOUT', 'CONNECT_TIMEOUT' or 'ABORTED'
   error.status // 499
 }
 ```
+
+### Timeouts
+
+Two independent budgets exist when talking HTTP. `fetch` gives you one — the abort
+signal — but the TCP/TLS handshake is governed by the underlying connector
+(undici on Node), which keeps its own 10s default no matter how long your signal
+waits. fetch-mpx exposes both:
+
+- `timeout` — total budget for the whole operation (signal). Default 10000.
+  Works on every platform.
+- `connectTimeout` — handshake budget (undici `connect.timeout` via a cached
+  `Agent` dispatcher). Node adapter only; defaults to `timeout`. A hang during
+  TCP/TLS setup now fails at this budget instead of undici's 10s default.
+
+```js
+await get(url, {timeout: 30000})            // handshake and total budget: 30s
+await get(url, {timeout: 30000, connectTimeout: 5000}) // handshake 5s, total 30s
+await get(url, {timeout: 0})                // no budget (caller signal still honored)
+```
+
+Connect timeouts are surfaced as `TimeoutError` with `code: 'CONNECT_TIMEOUT'`
+(when `clarifyTimeoutError` is on) instead of undici's raw
+`TypeError: fetch failed`.
 
 ## License
 

@@ -1,8 +1,9 @@
 /* eslint-disable max-lines */
 import {
-  expect, test, vi, beforeEach, afterEach,
+  expect, test, vi, beforeEach, afterEach, describe,
 } from 'vitest'
 import {createHttpClient} from '$src/index.js'
+import {composeAbortSignal} from '$src/client.js'
 
 // Pass-through: leaves errors unchanged. String errors stay as strings.
 const passThrough = error => error
@@ -262,5 +263,83 @@ describe('ping', () => {
     const {ping} = fresh()
     const result = await ping('https://example.com', {timeout: 10})
     expect(result).toBe(false)
+  })
+})
+
+describe('abort budget', () => {
+  test('timeout produces an AbortSignal for the platform fetch', async () => {
+    mockPlatformFetch.mockResolvedValue({
+      status: 200,
+      headers: new Map([['content-type', 'application/json']]),
+      json: () => Promise.resolve({}),
+    })
+
+    const {get} = fresh()
+    await get('https://example.com/api', {timeout: 5000})
+
+    const [, options] = mockPlatformFetch.mock.calls[0]
+    expect(options.signal).toBeInstanceOf(AbortSignal)
+  })
+
+  test('caller signal and timeout are composed into one signal', async () => {
+    mockPlatformFetch.mockResolvedValue({
+      status: 200,
+      headers: new Map([['content-type', 'application/json']]),
+      json: () => Promise.resolve({}),
+    })
+
+    const caller = new AbortController()
+    const {get} = fresh()
+    await get('https://example.com/api', {
+      timeout: 5000,
+      signal: caller.signal,
+    })
+
+    const [, options] = mockPlatformFetch.mock.calls[0]
+    expect(options.signal).toBeInstanceOf(AbortSignal)
+    expect(options.signal).not.toBe(caller.signal)
+  })
+})
+
+describe('composeAbortSignal', () => {
+  test('timeout 0 disables the budget and keeps the caller signal', () => {
+    const caller = new AbortController()
+    const signal = composeAbortSignal({signal: caller.signal, timeout: 0})
+
+    expect(signal).toBe(caller.signal)
+  })
+
+  test('timeout 0 with no caller signal yields no signal', () => {
+    expect(composeAbortSignal({timeout: 0})).toBeUndefined()
+  })
+})
+
+describe('undici connect timeout mapping', () => {
+  const fetchFailedWithCause = () => {
+    const error = new TypeError('fetch failed')
+    error.cause = {code: 'UND_ERR_CONNECT_TIMEOUT'}
+    return error
+  }
+
+  test('clarifyTimeoutError maps UND_ERR_CONNECT_TIMEOUT to Connect timeout', async () => {
+    mockPlatformFetch.mockRejectedValue(fetchFailedWithCause())
+
+    const {get} = fresh()
+    await expect(
+      get('https://example.com/api', {clarifyTimeoutError: true})
+    ).rejects.toMatchObject({
+      name: 'TimeoutError',
+      code: 'CONNECT_TIMEOUT',
+      status: 499,
+      message: 'Connect timeout',
+    })
+  })
+
+  test('without clarifyTimeoutError the raw error passes through', async () => {
+    const raw = fetchFailedWithCause()
+    mockPlatformFetch.mockRejectedValue(raw)
+
+    const {get} = fresh()
+    await expect(get('https://example.com/api')).rejects.toBe(raw)
   })
 })

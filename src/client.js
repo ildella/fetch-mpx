@@ -39,6 +39,21 @@ export const createTimeoutError = () => {
   return error
 }
 
+export const createConnectTimeoutError = () => {
+  const error = new Error('Connect timeout')
+  error.name = 'TimeoutError'
+  error.code = 'CONNECT_TIMEOUT'
+  error.status = 499
+  return error
+}
+
+export const composeAbortSignal = ({signal, timeout}) => {
+  if (!(timeout > 0))
+    return signal
+  const budget = AbortSignal.timeout(timeout)
+  return signal ? AbortSignal.any([signal, budget]) : budget
+}
+
 export const createAbortError = () => {
   const error = new Error('Request aborted')
   error.name = 'AbortError'
@@ -52,10 +67,23 @@ export const cleanRequestError = ({error, mapRequestError}) =>
     ? mapRequestError(error)
     : error
 
+const CONNECT_TIMEOUT_CODE = 'UND_ERR_CONNECT_TIMEOUT'
+
+const timeoutCodeOf = cleanedError =>
+  cleanedError.code ?? cleanedError.cause?.code
+
+const isTimeoutError = error =>
+  error.name === 'TimeoutError' || error.code === 'ETIMEDOUT'
+
+const isAbortError = error =>
+  error.name === 'AbortError' || error.code === 'AbortError'
+
 const throwTimeoutError = cleanedError => {
-  if (cleanedError.name === 'TimeoutError' || cleanedError.code === 'ETIMEDOUT')
+  if (timeoutCodeOf(cleanedError) === CONNECT_TIMEOUT_CODE)
+    throw createConnectTimeoutError()
+  if (isTimeoutError(cleanedError))
     throw createTimeoutError()
-  if (cleanedError.name === 'AbortError' || cleanedError.code === 'AbortError')
+  if (isAbortError(cleanedError))
     throw createAbortError()
 }
 
@@ -64,16 +92,19 @@ export const createRequest = ({platformFetch, mapRequestError}) => async (url, {
   body,
   headers = {},
   timeout = 10000,
+  connectTimeout,
+  signal,
   clarifyTimeoutError = false,
   ...config
 // eslint-disable-next-line complexity
 } = {}) => {
   const options = {
     method,
-    connectTimeout: timeout,
     headers: detectHeaders(body, headers),
     body: prepareBody(body),
     ...config,
+    signal: composeAbortSignal({signal, timeout}),
+    connectTimeout: connectTimeout ?? timeout,
   }
 
   try {

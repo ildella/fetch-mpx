@@ -53,6 +53,7 @@
     "vitest": "4.1.11"
   },
   "dependencies": {
-    "@stylistic/eslint-plugin": "5.10.0"
+    "@stylistic/eslint-plugin": "5.10.0",
+    "undici": "8.10.2"
   }
 }

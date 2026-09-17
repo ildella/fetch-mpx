@@ -1,12 +1,20 @@
-// Node.js platform fetch with connectTimeout support.
-// Translates connectTimeout into an AbortSignal.timeout for native fetch.
+import {Agent} from 'undici'
+
+const agents = new Map()
+
+export const agentFor = connectTimeout => {
+  if (!agents.has(connectTimeout))
+    agents.set(
+      connectTimeout,
+      new Agent({connect: {timeout: connectTimeout}})
+    )
+  return agents.get(connectTimeout)
+}
 
 export const platformFetch = (url, options = {}) => {
   if (options.connectTimeout) {
-    const timeoutSignal = AbortSignal.timeout(options.connectTimeout)
-    options.signal = options.signal
-      ? AbortSignal.any([options.signal, timeoutSignal])
-      : timeoutSignal
+    options.dispatcher = options.dispatcher ?? agentFor(options.connectTimeout)
+    delete options.connectTimeout
   }
   return globalThis.fetch(url, options)
 }
