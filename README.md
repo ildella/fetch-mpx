@@ -1,21 +1,19 @@
 # fetch-mpx
 
-A dependency-injected HTTP client with pluggable platform fetch, content-type detection, and error mapping.
+A tiny, axios-shaped HTTP client over platform `fetch`.
 
-- ESM, `"type": "module"`, Node `^22.19.0 || ^24 || ^26`
-- Yarn 6 (via [Yarn Switch](https://v6.yarnpkg.com/concepts/switch) — one-time setup: `curl -sS https://repo.yarnpkg.com/install | bash`, then `yarn` picks the right version from `packageManager`)
-- Vitest for testing
-- No build step — ships source directly
-- Core has zero dependencies; the Node platform adapter uses `undici` (its own `fetch` and `Agent`, so behavior is identical on every supported Node)
+Node `fetch` (undici) is capable but bare. This package adds a simple `get` / `post` / `put` / `patch` / `del` API, a first-class `timeout` option, HTTP error throwing, and just enough error mapping — without bringing axios or any other HTTP stack.
 
-## Design
+**Why this exists**
 
-`fetch-mpx` is built around two injected dependencies:
+- **Small, no extra stack.** Core has zero dependencies. The Node adapter imports `undici`, which already ships with Node, only for real connect-timeout control.
+- **Axios-like syntax.** `get(url)`, `post(url, body)`, `{timeout: 5000}` — not a thin fetch wrapper that still feels like fetch.
+- **`timeout` is a request option.** Works on every platform. On Node you also get `connectTimeout` for the TCP/TLS handshake (otherwise undici keeps its own 10s default).
+- **Same client, any platform.** Inject `platformFetch` — browser `fetch`, Node, Tauri's HTTP plugin, whatever. The core does not care.
+- **Status ≥ 400 throws.** A 404 is an `HttpError` with `.response`, not a successful `{status: 404}`.
+- **Minimal error mapping.** Optional `mapRequestError` turns platform-specific string errors (Tauri, etc.) into `Error` objects with `.code`.
 
-- **`platformFetch(url, options)`** — the actual fetch implementation (browser `fetch`, Node built-in, Tauri's HTTP plugin, etc.)
-- **`mapRequestError(error)`** — converts platform-specific error strings into `Error` objects with `.code` properties
-
-The library provides optional convenience platform adapters (`platform-browser`, `platform-node`), but the core is completely platform-agnostic.
+ESM, Node 22.19+, no build step — ships source.
 
 ## Install
 
