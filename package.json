@@ -35,6 +35,9 @@
     "access": "public"
   },
   "scripts": {
+    "audit": "yarn audit.prod",
+    "audit.prod": "yarn npm audit --environment production --severity moderate",
+    "up.ui": "npx -y npm-check-updates --interactive",
     "check:lint": "eslint --report-unused-disable-directives .",
     "lint": "eslint . --cache --max-warnings 0",
     "lint.nocache": "eslint . --max-warnings 0",
