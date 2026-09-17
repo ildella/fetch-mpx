@@ -103,6 +103,10 @@ waits. fetch-mpx exposes both:
   `Agent` dispatcher). Node adapter only; defaults to `timeout`. A hang during
   TCP/TLS setup now fails at this budget instead of undici's 10s default.
 
+On Node, requests run through undici's own `fetch` with the matching `Agent`
+from the same `undici` package — not the Node-bundled one — so dispatcher
+behavior is identical on every supported Node.
+
 ```js
 await get(url, {timeout: 30000})            // handshake and total budget: 30s
 await get(url, {timeout: 30000, connectTimeout: 5000}) // handshake 5s, total 30s
