@@ -1,6 +1,6 @@
 {
   "name": "fetch-mpx",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Dependency-injected HTTP client with pluggable platform fetch, content-type detection, and error mapping.",
   "type": "module",
   "license": "MIT",
@@ -46,6 +46,7 @@
   "devDependencies": {
     "@eslint/compat": "2.1.0",
     "@eslint/js": "10.0.1",
+    "@stylistic/eslint-plugin": "5.10.0",
     "@vitest/eslint-plugin": "1.6.27",
     "eslint": "9.39.5",
     "eslint-nostandard": "1.1.0",
@@ -53,7 +54,6 @@
     "vitest": "4.1.11"
   },
   "dependencies": {
-    "@stylistic/eslint-plugin": "5.10.0",
     "undici": "^7.0.0"
   }
 }
