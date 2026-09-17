@@ -3,7 +3,7 @@
 A dependency-injected HTTP client with pluggable platform fetch, content-type detection, and error mapping.
 
 - ESM, `"type": "module"`, Node 22+
-- Yarn 4 (Corepack)
+- Yarn 6 (via [Yarn Switch](https://v6.yarnpkg.com/concepts/switch) — one-time setup: `curl -sS https://repo.yarnpkg.com/install | bash`, then `yarn` picks the right version from `packageManager`)
 - Vitest for testing
 - No build step — ships source directly
 - Core has zero dependencies; the Node platform adapter uses `undici` for real connect-timeout control

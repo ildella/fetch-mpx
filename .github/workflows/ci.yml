@@ -11,20 +11,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: '22.x'
 
-      - name: Enable Corepack
-        shell: bash
-        run: |
-          node --version
-          corepack --version
-          corepack enable
-          corepack yarn --version
+      - name: Setup Yarn
+        uses: yarnpkg/setup-action@main
 
       - name: Debug OIDC
         run: |
@@ -32,7 +27,7 @@ jobs:
           echo "TOKEN=${ACTIONS_ID_TOKEN_REQUEST_TOKEN:+present}"
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
 
       - name: Run lint
         run: yarn lint
