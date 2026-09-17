@@ -13,7 +13,7 @@ Node `fetch` (undici) is capable but bare. This package adds a simple `get` / `p
 - **Status ≥ 400 throws.** A 404 is an `HttpError` with `.response`, not a successful `{status: 404}`.
 - **Minimal error mapping.** Optional `mapRequestError` turns platform-specific string errors (Tauri, etc.) into `Error` objects with `.code`.
 
-ESM, Node 22+, no build step — ships source.
+ESM, Node 22.19+, no build step — ships source.
 
 ## Install
 
