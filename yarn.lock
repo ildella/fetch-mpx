@@ -3,7 +3,7 @@
     "version": 9
   },
   "workspaces": {
-    "fetch-mpx": "2326236fc7ae6a199051a00f09db071191c251a38515470d6f23ea094f68f5ba032067d31d627feff5ad05de52842ba1d9cebb0d950e088c2a718438255b58fb"
+    "fetch-mpx": "e181bf0d7cbf9c99af7be96f717be7bd9a75245b042a8b99ff231b3a82a939104baa16734065a29922115091d9e8644f75ff2300e7273e5a42d209e73fb2bba1"
   },
   "entries": {
     "@cacheable/memory@npm:^2.2.0": {
@@ -1910,11 +1910,11 @@
         }
       }
     },
-    "undici@npm:^7.0.0": {
-      "checksum": "89a6ef043e561e37c3707253b3e9b90ee9baea5d83b9edf771b8710ce00f770fe0c43a3256d11765a48c0464d5752cf30296e4e4e2c862cad198c364df55bd31",
+    "undici@npm:^7.0.0 || ^8.0.0": {
+      "checksum": "54343f0b3ddb835b33fb71d09bb32695288a42f6183e9ba36890fdaf8316dd5638ae43281e8d0a84972a11755e8f6f207178601fb2516d99bd77e671770f125b",
       "resolution": {
-        "resolution": "undici@npm:7.29.1",
-        "version": "7.29.1"
+        "resolution": "undici@npm:8.11.2",
+        "version": "8.11.2"
       }
     },
     "undici@npm:^8.4.1": {

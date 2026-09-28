@@ -10,7 +10,7 @@ Node `fetch` (undici) is capable but bare. This package adds a simple `get` / `p
 
 **Why this exists**
 
-- **Small, no extra stack.** Core has zero dependencies. The Node adapter imports `undici`, which already ships with Node, only for real connect-timeout control.
+- **Small, no extra stack.** Core has zero dependencies. The Node adapter runs requests on npm `undici` (`^7 || ^8`) using its own `fetch` and `Agent` together — the only way to raise undici's 10s handshake wall — so it works identically on every supported Node and dedupes in apps that already use either major.
 - **Axios-like syntax.** `get(url)`, `post(url, body)`, `{timeout: 5000}` — not a thin fetch wrapper that still feels like fetch.
 - **`timeout` is a request option.** Works on every platform. On Node you also get `connectTimeout` for the TCP/TLS handshake (otherwise undici keeps its own 10s default).
 - **Same client, any platform.** Inject `platformFetch` — browser `fetch`, Node, Tauri's HTTP plugin, whatever. The core does not care.
@@ -116,6 +116,18 @@ await get(url, {timeout: 0})                // no budget (caller signal still ho
 Connect timeouts are surfaced as `TimeoutError` with `code: 'CONNECT_TIMEOUT'`
 (when `clarifyTimeoutError` is on) instead of undici's raw
 `TypeError: fetch failed`.
+
+The Node adapter calls undici's own `fetch`, not the Node-bundled `globalThis.fetch`,
+and sets its own `Agent` dispatcher to enforce `connectTimeout`. Three consequences:
+
+- direct `platformFetch` users get undici's `Response` class, not Node's
+  (`instanceof Response` differs); `createHttpClient` consumers get plain
+  `{data, status, headers}` and are unaffected
+- a `dispatcher` you inject must come from the same undici major the app resolved
+- Node's env-proxy (`NODE_USE_ENV_PROXY` / `--use-env-proxy`) does not apply, since
+  it configures the global dispatcher the adapter bypasses. To route through a
+  proxy, pass your own dispatcher (`get(url, {dispatcher: new EnvHttpProxyAgent()})`)
+  or a custom `platformFetch`.
 
 ## License
 

@@ -9,13 +9,19 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: ['22.x', '24.x', '26.x']
+        undici: ['^7.0.0', '^8.0.0']
+
     steps:
       - uses: actions/checkout@v7
 
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
-          node-version: '22.x'
+          node-version: ${{ matrix.node-version }}
 
       - name: Setup Yarn
         uses: yarnpkg/setup-action@main
@@ -28,10 +34,15 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
+      - name: Pin undici ${{ matrix.undici }}
+        run: YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn add "undici@${{ matrix.undici }}"
+
       - name: Run Audit
+        if: matrix.undici == '^8.0.0'
         run: yarn audit
 
       - name: Run lint
+        if: matrix.undici == '^8.0.0'
         run: yarn lint
 
       - name: Run tests

@@ -1,5 +1,8 @@
-import {createServer} from 'node:net'
-import {expect, test, afterEach} from 'vitest'
+import net from 'node:net'
+import {createServer as createHttpServer} from 'node:http'
+import {
+  expect, test, vi, afterEach,
+} from 'vitest'
 import {createHttpClient} from '$src/index.js'
 import {platformFetch} from '$src/platform-node.js'
 
@@ -10,15 +13,16 @@ const {get} = createHttpClient({
 
 let server
 
+afterEach(() => {
+  server?.close()
+  vi.unstubAllGlobals()
+})
+
 const silentServer = () => new Promise(resolve => {
-  server = createServer()
+  server = net.createServer()
   server.on('connection', socket => socket.pause())
   server.listen(0, '127.0.0.1', () =>
     resolve(server.address().port))
-})
-
-afterEach(() => {
-  server?.close()
 })
 
 test(
@@ -45,3 +49,21 @@ test(
   },
   8000
 )
+
+test('requests go through the same-module undici fetch, not globalThis.fetch', async () => {
+  server = createHttpServer((req, res) => {
+    res.writeHead(200, {'content-type': 'application/json'})
+    res.end('{"ok":true}')
+  })
+  server.listen(0, '127.0.0.1')
+  await new Promise(resolve => server.on('listening', resolve))
+  const port = server.address().port
+
+  vi.stubGlobal('fetch', () => {
+    throw new Error('globalThis.fetch was used')
+  })
+
+  const {data} = await get(`http://127.0.0.1:${port}`, {timeout: 5000})
+
+  expect(data).toEqual({ok: true})
+})
