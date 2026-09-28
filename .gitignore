@@ -15,4 +15,3 @@
 # standard
 node_modules/
 .eslintcache
-.codegraph/
